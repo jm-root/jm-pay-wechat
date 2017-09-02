@@ -2,7 +2,7 @@ import service from './service'
 import router from './router'
 
 export default function (opts = {}) {
-  ['appId', 'mchId', 'notify_url']
+  ['partnerKey', 'appId', 'mchId', 'notifyUrl']
     .forEach(function (key) {
       process.env[key] && (opts.wechat[key] = process.env[key])
     })
