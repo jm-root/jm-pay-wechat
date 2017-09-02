@@ -4,6 +4,7 @@ import router from './router'
 export default function (opts = {}) {
   ['partnerKey', 'appId', 'mchId', 'notifyUrl']
     .forEach(function (key) {
+      opts.wechat || (opts.wechat = {})
       process.env[key] && (opts.wechat[key] = process.env[key])
     })
 
