@@ -1,0 +1,60 @@
+{
+  "name": "jm-pay-wechat",
+  "version": "0.0.1",
+  "description": "general pay-wechat service",
+  "main": "./lib/index",
+  "scripts": {
+    "start": "node node_modules/jm-server/bin/jm-server",
+    "cluster": "node node_modules/jm-server/bin/jm-server --cluster",
+    "test": "node node_modules/babel-cli/bin/babel-node ./node_modules/mocha/bin/_mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jm-root/jm-pay-wechat.git"
+  },
+  "keywords": [
+    "javascript",
+    "jm-pay-wechat"
+  ],
+  "author": {
+    "name": "Jeff YU"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jm-root/jm-pay-wechat/issues"
+  },
+  "homepage": "https://github.com/jm-root/jm-pay-wechat",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "jm-pay": "^0.0.2",
+    "jm-server": "^1.0.5",
+    "wechat-pay": "^0.2.5"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-preset-env": "^1.5.1",
+    "benchmark": "^2.1.4",
+    "chai": "^4.0.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.1.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-browserify": "^0.5.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-eslint": "^3.0.1",
+    "gulp-jsdoc3": "^1.0.1",
+    "gulp-jshint": "^2.0.4",
+    "gulp-rename": "^1.2.2",
+    "gulp-sequence": "^0.4.6",
+    "gulp-uglify": "^3.0.0",
+    "gulp-util": "^3.0.8",
+    "jm-pay": "^0.0.1",
+    "jshint": "^2.9.4",
+    "mocha": "^3.4.2"
+  }
+}
