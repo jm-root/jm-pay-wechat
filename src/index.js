@@ -12,14 +12,12 @@ export default function (opts = {}) {
   config.channels || (config.channels = [])
   config.channels.push('wechat')
 
-  let o = service(opts)
+  let o = service(opts, this)
   o.router = router
 
   var self = this
   this.on('open', function () {
-    if (self.servers.http.middle) {
-      self.servers.http.middle.use('/pay/wechat/pay.notify', o.middleware)
-    }
+    self.servers.http.middle.use('/pay/wechat/pay.notify', o.middleware)
   })
 
   return o

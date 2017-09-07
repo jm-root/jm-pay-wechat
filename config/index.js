@@ -3,6 +3,7 @@ var config = {
   development: {
     port: 3000,
     lng: 'zh_CN',
+    debug: 1,
     wechat: {
       partnerKey: '599e70a42ed9ec26d4d6abd6d4d6abd6',
       appId: 'wxaea7c6a9079108c1',
