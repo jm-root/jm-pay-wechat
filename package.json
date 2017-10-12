@@ -1,6 +1,6 @@
 {
   "name": "jm-pay-wechat",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "general pay-wechat service",
   "main": "./lib/index",
   "scripts": {
@@ -26,7 +26,6 @@
   "homepage": "https://github.com/jm-root/jm-pay-wechat",
   "dependencies": {
     "bluebird": "^3.5.0",
-    "jm-pay": "^0.0.2",
     "jm-server": "^1.0.5",
     "wechat-pay": "^0.2.5"
   },
@@ -53,7 +52,6 @@
     "gulp-sequence": "^0.4.6",
     "gulp-uglify": "^3.0.0",
     "gulp-util": "^3.0.8",
-    "jm-pay": "^0.0.1",
     "jshint": "^2.9.4",
     "mocha": "^3.4.2"
   }

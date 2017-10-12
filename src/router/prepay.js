@@ -1,27 +1,24 @@
-import _ from 'lodash'
-import validator from 'validator'
-import error from 'jm-err'
 import MS from 'jm-ms-core'
 import log from 'jm-log4js'
+import error from 'jm-err'
 
 let ms = new MS()
+let logger = log.getLogger('jm-pay-wechat')
 let Err = error.Err
-let logger = log.getLogger('jm-pay')
 
 export default function (service, opts = {}) {
-  let t = function (doc, lng) {
-    if (doc && lng && doc.err && doc.msg) {
-      return {
-        err: doc.err,
-        msg: service.t(doc.msg, lng) || Err.t(doc.msg, lng) || doc.msg
-      }
-    }
-    return doc
+  let pay = function (opts, cb, next) {
+    let data = opts.data
+    data.channel = opts.params.channel
+    service.pay.post('/pays', data, function (err, doc) {
+      if (err) return cb(err, doc)
+      opts.pay = doc
+      next()
+    })
   }
 
   let prepay = function (opts, cb, next) {
     let pay = opts.pay
-    if (!pay) cb(null, Err.FA_SYS)
     let data = opts.data
 
     data.trade_type || (data.trade_type = 'JSAPI')
@@ -41,20 +38,26 @@ export default function (service, opts = {}) {
         function (err, doc) {
           if (err) {
             doc = {
-              err: err.name,
-              msg: err.message
+              err: Err.FAIL.err,
+              msg: err.message || err.toString()
             }
-            logger.error(err.stack)
+            err = new Error(err)
+            logger.error(err)
+            service.pay
+              .delete('/pays/' + pay._id)
+              .then(function (doc) {
+              })
           } else {
             logger.info('将wechat响应的支付凭据返回前端:' + JSON.stringify(doc))
           }
 
-          cb(err, doc)
+          cb(null, doc)
         })
   }
 
   let router = ms.router()
   router
-    .add('/wechat', 'post', prepay)
+    .add('/', 'post', pay)
+    .add('/', 'post', prepay)
   return router
-};
+}

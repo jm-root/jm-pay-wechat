@@ -4,31 +4,25 @@ var config = {
     port: 3000,
     lng: 'zh_CN',
     debug: 1,
+    gateway: 'http://api.h5.jamma.cn:81',
     wechat: {
       partnerKey: '599e70a42ed9ec26d4d6abd6d4d6abd6',
       appId: 'wxaea7c6a9079108c1',
       mchId: '1487871012',
-      notifyUrl: 'http://api.mx.jamma.cn/pay/wechat/'
+      notifyUrl: 'http://api.h5.jamma.cn/pay/wechat/'
     },
     modules: {
-      'pay': {
-        module: 'jm-pay'
-      },
-      'pay-wechat': {
-        prefix: '/pay',
+      pay: {
         module: process.cwd() + '/lib'
       }
     }
   },
   production: {
-    port: 3000,
+    port: 80,
     lng: 'zh_CN',
+    gateway: 'http://gateway.app',
     modules: {
-      'pay': {
-        module: 'jm-pay'
-      },
-      'pay-wechat': {
-        prefix: '/pay',
+      pay: {
         module: process.cwd() + '/lib'
       }
     }
