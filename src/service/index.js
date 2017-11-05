@@ -1,5 +1,6 @@
 import MS from 'jm-ms'
 import log from 'jm-log4js'
+import _ from 'lodash'
 import wechatPay from 'wechat-pay'
 
 let logger = log.getLogger('jm-pay-wechat')
@@ -17,6 +18,39 @@ export default function (opts = {}, app) {
   let o = {
     payment: new wechatPay.Payment(opts.wechat)
   }
+
+  o.payment.getBrandWCPayRequestParams = function(order, callback){
+      var self = this;
+      var default_params = {
+          appid: this.appId,
+          partnerid: this.mchId,
+          timestamp: o.payment._generateTimeStamp(),
+          noncestr: o.payment._generateNonceStr()
+      };
+
+      order = o.payment._extendWithDefault(order, [
+          'notify_url'
+      ]);
+
+      o.payment.unifiedOrder(order, function (err, data) {
+          if (err) {
+              return callback(err);
+          }
+
+          var params = _.extend(default_params, {
+              prepayid: data.prepay_id,
+              package: 'Sign=WXPay'
+          });
+
+          params.sign = self._getSign(params);
+
+          if(order.trade_type == 'NATIVE'){
+              params.code_url = data.code_url;
+          }
+
+          callback(null, params);
+      });
+  };
 
   let bind = function (name, uri) {
     uri || (uri = '/' + name)
