@@ -86,7 +86,7 @@ export default function (opts = {}, app) {
       let c = {code: payCode}
       let data = {
         moditime: Date.now(),
-        status: 1
+        status: 2
       }
 
       /**
@@ -104,7 +104,7 @@ export default function (opts = {}, app) {
           }
         })
         .then(function (doc) {
-          if (!doc) return o.pay.post('/pays/' + doc._id, data)
+          if (doc) return o.pay.post('/pays/' + doc._id, data)
           return null
         })
         .then(function (doc) {

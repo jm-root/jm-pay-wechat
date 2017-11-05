@@ -51,6 +51,9 @@ export default function (service, opts = {}) {
             logger.info('将wechat响应的支付凭据返回前端:' + JSON.stringify(doc))
           }
 
+          doc = doc || {}
+          doc.id = pay._id
+          doc.code = pay.code
           cb(null, doc)
         })
   }
