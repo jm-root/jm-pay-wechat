@@ -68,16 +68,8 @@ export default function (opts = {}, app) {
     .getNotify()
     .done(function (message, req, res, next) {
       logger.info('支付成功: %j', message)
-      let openid = message.openid
       let payCode = message.out_trade_no
-      let attach = {}
-      try {
-        attach = JSON.parse(message.attach)
-      } catch (e) {
-      }
-
       res.reply('success')
-
       /**
        * 有错误返回错误，不然微信会在一段时间里以一定频次请求你
        * res.reply(new Error('...'))
@@ -85,6 +77,7 @@ export default function (opts = {}, app) {
 
       let c = {code: payCode}
       let data = {
+        bill: message,
         moditime: Date.now(),
         status: 2
       }
