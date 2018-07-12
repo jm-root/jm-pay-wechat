@@ -21,11 +21,21 @@ export default function (opts = {}, app) {
 
   o.payment.getBrandWCPayRequestParams = function (order, callback) {
     let self = this
-    let defaultParams = {
-      appid: this.appId,
-      partnerid: this.mchId,
-      timestamp: o.payment._generateTimeStamp(),
-      noncestr: o.payment._generateNonceStr()
+    let default_params = {}
+    if (order.trade_type === 'JSAPI') {
+      default_params = {
+        appId: this.appId,
+        timeStamp: o.payment._generateTimeStamp(),
+        nonceStr: o.payment._generateNonceStr(),
+        signType: 'MD5'
+      };
+    } else {
+      default_params = {
+        appid: this.appId,
+        partnerid: this.mchId,
+        timestamp: o.payment._generateTimeStamp(),
+        noncestr: o.payment._generateNonceStr()
+      }
     }
 
     order = o.payment._extendWithDefault(order, [
@@ -37,18 +47,28 @@ export default function (opts = {}, app) {
         return callback(err)
       }
 
-      let params = _.extend(defaultParams, {
-        prepayid: data.prepay_id,
-        package: 'Sign=WXPay'
-      })
+      let opts = {}
+      if (order.trade_type === 'JSAPI') {
+        opts = {
+          package: 'prepay_id=' + data.prepay_id
+        }
+      } else {
+        opts = {
+          prepayid: data.prepay_id,
+          package: 'Sign=WXPay'
+        }
+      }
+
+      let params = _.extend(default_params, opts);
 
       params.sign = self._getSign(params)
 
       if (order.trade_type === 'NATIVE') {
-        params.code_url = data.code_url
+        params.code_url = data.code_url;
       }
 
       callback(null, params)
+
     })
   }
 
