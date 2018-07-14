@@ -2,9 +2,15 @@ import MS from 'jm-ms'
 import log from 'jm-log4js'
 import _ from 'lodash'
 import wechatPay from 'wechat-pay'
+import error from 'jm-err'
+import consts from '../consts'
+import path from 'path'
+import fs from 'fs'
 
 let logger = log.getLogger('jm-pay-wechat')
 let ms = MS()
+
+const Err = _.defaults(error.Err, consts.Err)
 
 /**
  * pay-wechat service
@@ -15,7 +21,11 @@ let ms = MS()
  * @return {Object} service
  */
 export default function (opts = {}, app) {
+  let p = path.join(__dirname, "../../config/apiclient_cert.p12")
+  opts.wechat.pfx = fs.readFileSync(p)
   let o = {
+    Err: Err,
+    config: opts,
     payment: new wechatPay.Payment(opts.wechat)
   }
 
@@ -123,6 +133,49 @@ export default function (opts = {}, app) {
         .then(function (doc) {
           if (doc) {
             logger.info('付款单编码 %j 修改为已支付', payCode)
+          }
+        })
+    })
+
+  o.refundMiddleware = middleware(opts.wechat)
+    .getRefundNotify()
+    .done(function (message, req, res, next) {
+      logger.info('退款回调信息: %j', message)
+      let payCode = message.out_trade_no
+      res.reply('success')
+      /**
+       * 有错误返回错误，不然微信会在一段时间里以一定频次请求你
+       * res.reply(new Error('...'))
+       */
+
+      let c = {code: payCode}
+      let data = {
+        bill: message,
+        moditime: Date.now(),
+        status: 1
+      }
+
+      /**
+       * 查询退单，在自己系统里把退单标为已处理
+       * 如果退单之前已经处理过了直接返回成功
+       */
+      o.pay
+        .get('/refunds/', c)
+        .then(function (doc) {
+          if (doc && doc.rows && doc.rows.length) {
+            return doc.rows[0]
+          } else {
+            logger.warn('无效退款单, 编码: %s', payCode)
+            return null
+          }
+        })
+        .then(function (doc) {
+          if (doc) return o.pay.post('/refunds/' + doc._id, data)
+          return null
+        })
+        .then(function (doc) {
+          if (doc) {
+            logger.info('退款单编码 %j 修改为已退款', payCode)
           }
         })
     })

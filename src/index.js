@@ -6,7 +6,7 @@ export default function (opts = {}) {
   keys.forEach(function (key) {
     process.env[key] && (opts[key] = process.env[key])
   })
-  keys = ['partnerKey', 'appId', 'mchId', 'notifyUrl']
+  keys = ['partnerKey', 'appId', 'mchId', 'notifyUrl', 'refundNotifyUrl']
   keys.forEach(function (key) {
     opts.wechat || (opts.wechat = {})
     process.env[key] && (opts.wechat[key] = process.env[key])
@@ -19,6 +19,7 @@ export default function (opts = {}) {
   if (self) {
     this.on('open', function () {
       self.servers.http.middle.use('/pay/wechat/pay.notify', o.middleware)
+      self.servers.http.middle.use('/pay/wechat/pay.refundnotify', o.refundMiddleware)
     })
   }
 

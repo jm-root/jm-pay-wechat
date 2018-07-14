@@ -29,7 +29,7 @@ export default function (service, opts = {}) {
       trade_type: data.trade_type,
       openid: data.openid,
       spbill_create_ip: opts.ip || '127.0.0.1',
-      out_trade_no: pay.code,
+      out_trade_no: pay._id,
       attach: pay.memo
     }
 
