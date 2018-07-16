@@ -1,6 +1,6 @@
 {
   "name": "jm-pay-wechat",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "general pay-wechat service",
   "main": "./lib/index",
   "scripts": {
