@@ -9,8 +9,8 @@ var config = {
       partnerKey: '2Hw24b1502A0la4PU80fMK394e00a7b5',
       appId: 'wx3f7ae3ad8b85ace5',
       mchId: '1398678502',
-      notifyUrl: 'http://api.h5.jamma.cn/pay/wechat/',
-      refundNotifyUrl: 'http://api.h5.jamma.cn/pay/wechat/'
+      notifyUrl: 'http://api.mdt.24haowan.com/pay/wechat/pay.notify',
+      refundNotifyUrl: 'http://api.mdt.24haowan.com/pay/wechat/pay.refundnotify'
     },
     modules: {
       pay: {
