@@ -1,10 +1,20 @@
 {
   "appenders": [
     {
-      "type": "console"
+      "type": "dateFile",
+      "filename": "logs/server",
+      "pattern": "yyyyMMdd.log",
+      "alwaysIncludePattern": true,
+      "category": ["jm-pay-wechat", "jm-server", "console"]
+    },
+    {
+      "type": "console",
+      "category": ["jm-pay-wechat", "jm-server", "console"]
     }
   ],
   "replaceConsole": true,
   "levels": {
+    "jm-pay-wechat": "debug",
+    "jm-server": "info"
   }
 }
