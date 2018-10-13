@@ -1,0 +1,99 @@
+openapi: 3.0.0
+# Added by API Auto Mocking Plugin
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/jm-root/jm-pay-wechat/1.0.0
+info:
+  version: "1.0.0"
+  title: jm-pay-wechat-api
+  description: 微信支付API
+paths:
+  '/pay/prepay/:channel':
+    post:
+      description: 调用统一下单接口在微信支付服务后台生成预支付交易单
+      parameters:
+        - name: channel
+          description: 支付渠道
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pay'
+      responses:
+        '200':
+          description: 创建成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pay'
+components:
+  schemas:
+    Ret:
+      type: object
+      properties:
+        ret:
+          type: integer
+          format: int32
+          description: 1 成功 0 失败
+      description: 操作结果
+    Pay:
+      type: object
+      properties:
+        openid:
+          type: string
+          description: openid
+        code:
+          type: string
+          description: 付款单编号
+        orderId:
+          type: string
+          description: 关联订单id
+        payee:
+          type: string
+          description: 收款用户id
+        payer:
+          type: string
+          description: 付款用户id
+        currency:
+          type: string
+          description: 币种
+        amount:
+          type: integer
+          format: int64
+          description: 金额，人民币单位为分
+        bill:
+          type: object
+          description: 第三方支付票据
+        memo:
+          type: string
+          description: 备注信息
+        title:
+          type: string
+          description: 标题
+        content:
+          type: string
+          description: 内容
+    Refund:
+      type: object
+      properties:
+        code:
+          type: string
+          description: 退款单编号
+        pay:
+          type: string
+          description: 对应付款单
+        amount:
+          type: integer
+          format: int64
+          description: 金额，人民币单位为分
+        bill:
+          type: object
+          description: 第三方退款票据
+        status:
+          type: integer
+          format: int32
+          description: 状态 0未退 1已退款 该状态为逻辑状态,不代表实际退款结果.
